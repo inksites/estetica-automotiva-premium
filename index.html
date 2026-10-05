@@ -202,10 +202,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent-2);outline-o
 }
 
 
+
 /* === EFEITOS PREMIUM 05-10-2026 === */
 .serv,.dif,.dep{position:relative;isolation:isolate}
-.serv::after,.dif::after,.dep::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s;background:radial-gradient(380px circle at var(--mx,50%) var(--my,30%),color-mix(in srgb,var(--accent) 22%,transparent),transparent 60%);z-index:2;mix-blend-mode:screen}
-.serv:hover::after,.dif:hover::after,.dep:hover::after{opacity:1}
 .serv:hover,.dif:hover,.dep:hover{border-color:color-mix(in srgb,var(--accent) 65%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 30%,transparent),0 0 32px color-mix(in srgb,var(--accent) 30%,transparent),0 0 80px color-mix(in srgb,var(--accent) 14%,transparent),0 24px 50px rgba(0,0,0,.5)}
 .dif{transition:border-color .3s,box-shadow .3s,transform .3s}.dif:hover{transform:translateY(-4px)}
 .dep{transition:border-color .3s,box-shadow .3s}
@@ -284,7 +283,6 @@ figs.forEach(function(f,i){f.addEventListener('click',function(){atual=i;dg()})}
 if(figs.length){window.addEventListener('resize',dg);dg()}
 </script>
 <script>/* === EFEITOS PREMIUM === */
-document.querySelectorAll('.serv,.dif,.dep').forEach(function(c){c.addEventListener('mousemove',function(e){var r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')})});
 (function(){var b=document.querySelector('.prog');function f(){var d=document.documentElement,t=d.scrollHeight-innerHeight;b.style.transform='scaleX('+(t>0?scrollY/t:0)+')'}addEventListener('scroll',function(){requestAnimationFrame(f)},{passive:true});f()})();
 </script>
 </body>
