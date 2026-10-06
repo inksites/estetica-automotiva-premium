@@ -268,12 +268,18 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent-2);outline-o
 <a class="zap" href="https://ig.me/m/inksites.br" target="_blank" rel="noopener" aria-label="Agendar"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.06-1.33A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.28 1.2-1.77 1.24-.45.05-1.03.07-1.66-.1-.38-.11-.87-.28-1.5-.55-2.64-1.14-4.36-3.8-4.5-3.98-.13-.18-1.08-1.43-1.08-2.73s.68-1.93.92-2.2c.24-.26.53-.33.7-.33.18 0 .35 0 .5.01.16.01.38-.06.6.45.22.53.75 1.83.82 1.96.07.13.11.29.02.47-.09.18-.14.29-.27.44-.13.16-.28.35-.4.47-.13.13-.27.27-.11.53.15.26.68 1.12 1.46 1.82 1 .89 1.85 1.17 2.11 1.3.26.13.41.11.56-.07.16-.18.65-.76.82-1.02.18-.26.35-.22.58-.13.24.09 1.5.71 1.76.84.26.13.44.2.5.31.06.11.06.63-.16 1.25z"/></svg></a>
 <script>
 (function(){var N=61,P="fotos/vertice-premium/quadros/",cv=document.getElementById('tela'),cx=cv.getContext('2d'),sec=document.getElementById('rola'),et=[].slice.call(document.querySelectorAll('.etapa')),im=[],at=-1,M=et.length;
-for(var i=0;i<N;i++){var x=new Image();x.decoding='async';x.src=P+'q'+String(i+1).padStart(3,'0')+'.webp';im.push(x)}
+cv.style.background='#000 url(fotos/vertice-premium/capa.jpg) center/cover no-repeat';
+for(var i=0;i<N;i++){var x=new Image();x.decoding='async';x.onload=function(){des()};im.push(x)}
+// celular: 1º quadro sozinho; depois 1 a cada 6 (cobre a rolagem toda), 1 a cada 3, e o resto, 6 downloads por vez
+var ord=[0],vis={0:1};[6,3,1].forEach(function(s){for(var k=0;k<N;k+=s)if(!vis[k]){vis[k]=1;ord.push(k)}});
+var fila=0;function prox(){if(fila>=ord.length)return;var q=ord[fila++],m=im[q];m.addEventListener('load',prox);m.addEventListener('error',prox);m.src=P+'q'+String(q+1).padStart(3,'0')+'.webp'}
+prox();im[0].addEventListener('load',function(){for(var j=0;j<5;j++)prox()});
+function perto(q){for(var d=0;d<N;d++){var a=im[q-d],b=im[q+d];if(a&&a.complete&&a.naturalWidth)return a;if(b&&b.complete&&b.naturalWidth)return b}return null}
 function tam(){var r=cv.getBoundingClientRect(),d=Math.min(window.devicePixelRatio||1,2);cv.width=r.width*d;cv.height=r.height*d;at=-1;des()}
 function cob(m){var cw=cv.width,ch=cv.height,ir=m.naturalWidth/m.naturalHeight,cr=cw/ch,w,h,x,y;if(ir>cr){h=ch;w=ch*ir;x=(cw-w)*.55;y=0}else{w=cw;h=cw/ir;x=0;y=(ch-h)/2}cx.drawImage(m,x,y,w,h)}
 function pr(){var r=sec.getBoundingClientRect(),t=sec.offsetHeight-window.innerHeight;return Math.min(1,Math.max(0,-r.top/Math.max(1,t)))}
-function des(){var p=pr(),q=Math.min(N-1,Math.floor(p*(N-1))),m=im[q];if(q!==at&&m.complete&&m.naturalWidth){cob(m);at=q}var e=Math.min(M-1,Math.floor(p*M*0.999));et.forEach(function(el,k){el.classList.toggle('on',k===e)})}
-im[0].onload=function(){at=-1;des()};window.addEventListener('scroll',function(){requestAnimationFrame(des)},{passive:true});window.addEventListener('resize',tam);tam()})();
+function des(){var p=pr(),q=Math.min(N-1,Math.floor(p*(N-1))),m=perto(q),qi=m?im.indexOf(m):-1;if(m&&qi!==at){cob(m);at=qi}var e=Math.min(M-1,Math.floor(p*M*0.999));et.forEach(function(el,k){el.classList.toggle('on',k===e)})}
+window.addEventListener('scroll',function(){requestAnimationFrame(des)},{passive:true});window.addEventListener('resize',tam);tam()})();
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('ok');io.unobserve(e.target)}})},{threshold:.12});
 document.querySelectorAll('.revelar').forEach(function(el){io.observe(el)});
 var tr=document.getElementById('trilho');document.querySelectorAll('[data-d]').forEach(function(b){b.addEventListener('click',function(){tr.scrollBy({left:+b.dataset.d*(tr.firstElementChild.offsetWidth+18),behavior:'smooth'})})});
